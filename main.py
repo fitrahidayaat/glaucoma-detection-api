@@ -73,7 +73,7 @@ async def predict(image: UploadFile = File(...)):
 
         prediction = model.predict([cnn_input, sift_input])
 
-        label_map = {"0": "Glaucoma Present", "1": "Glaucoma not Present"}
+        label_map = {"0": "Glaucoma not Present", "1": "Glaucoma Present"}
         confidence = float(prediction[0][0])
         predicted_label = label_map[str(int(confidence > 0.5))]
 

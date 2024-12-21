@@ -73,16 +73,16 @@ async def predict(image: UploadFile = File(...)):
 
         prediction = model.predict([cnn_input, sift_input])
 
-        label_map = {"0": "Glaucoma not Present", "1": "Glaucoma Present"}
-        confidence = float(prediction[0][0])
-        predicted_label = label_map[str(int(confidence > 0.5))]
+        label_map = {"0": "Glaucoma Present", "1": "Glaucoma not Present"}
+        threshold = float(prediction[0][0])
+        predicted_label = label_map[str(int(threshold < 0.5))]
 
         os.remove(temp_file_path)
 
         return JSONResponse(
             content={
                 "prediction": predicted_label,
-                "confidence": f"{round(confidence * 100, 2)}"
+                "threshold": f"{round(threshold * 100, 2)}"
             }
         )
     except Exception as e:
